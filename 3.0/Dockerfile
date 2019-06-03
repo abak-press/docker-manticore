@@ -8,9 +8,11 @@ RUN echo "Asia/Yekaterinburg" > /etc/timezone \
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
-ENV MANTICORE_VERSION 3.0.0
-ENV MANTICORE_FULLVERSION ${MANTICORE_VERSION}-190509-95141ec-release-stemmer.trusty_amd64-bin
+ENV MANTICORE_VERSION 3.0.2
+ENV MANTICORE_FULLVERSION ${MANTICORE_VERSION}-190531-e3d296e-release-stemmer.trusty_amd64-bin
 ENV MANTICORE_PACKAGE manticore_${MANTICORE_FULLVERSION}.deb
+
+COPY sphinx-contrib-2.1.1-manticore.deb /tmp/sphinx-contrib-2.1.1-manticore.deb
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq \
   && apt-get install -yq --no-install-recommends \
@@ -26,8 +28,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq \
   && update-ca-certificates \
   && cd /tmp && wget https://github.com/manticoresoftware/manticoresearch/releases/download/${MANTICORE_VERSION}/${MANTICORE_PACKAGE} \
   && dpkg -i /tmp/${MANTICORE_PACKAGE} \
+  && dpkg -i /tmp/sphinx-contrib-2.1.1-manticore.deb \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /tmp/sphinx-contrib-2.1.1-manticore.deb \
   && truncate -s 0 /var/log/*log
 
 RUN mkdir /var/run/sshd \
