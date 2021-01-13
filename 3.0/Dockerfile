@@ -25,6 +25,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq \
     libodbc1 \
     unixodbc \
     ca-certificates \
+    rsync \
   && update-ca-certificates \
   && cd /tmp && wget https://github.com/manticoresoftware/manticoresearch/releases/download/${MANTICORE_VERSION}/${MANTICORE_PACKAGE} \
   && dpkg -i /tmp/${MANTICORE_PACKAGE} \
